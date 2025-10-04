@@ -1,0 +1,57 @@
+[gd_scene load_steps=8 format=3 uid="uid://tvgp7r3oyq0c"]
+
+[ext_resource type="Script" path="res://scripts/player.gd" id="1_klhag"]
+[ext_resource type="Texture2D" uid="uid://bgydtjt8dttd1" path="res://sprites/player.png" id="2_vya8x"]
+[ext_resource type="PackedScene" uid="uid://bl25tjtcngn46" path="res://scenes/weapon.tscn" id="3_cyyhf"]
+[ext_resource type="AudioStream" uid="uid://u2tsb70rxjpa" path="res://audio/step.wav" id="4_26x1o"]
+
+[sub_resource type="Gradient" id="Gradient_cx7fn"]
+interpolation_mode = 2
+offsets = PackedFloat32Array(0.194805, 0.883117)
+colors = PackedColorArray(2.76752e-07, 0.115017, 0.221482, 1, 6.01634e-09, 0.0716441, 0.150949, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_djb65"]
+gradient = SubResource("Gradient_cx7fn")
+width = 640
+height = 360
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8jain"]
+size = Vector2(16, 16)
+
+[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("sprite", "weapon", "step_sfx")]
+collision_layer = 2
+script = ExtResource("1_klhag")
+sprite = NodePath("Sprite2D")
+weapon = NodePath("Weapon")
+step_sfx = NodePath("StepSFX")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+
+[node name="TextureRect" type="TextureRect" parent="Camera2D"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -320.0
+offset_top = -180.0
+offset_right = 320.0
+offset_bottom = 180.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_djb65")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_vya8x")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_8jain")
+
+[node name="Weapon" parent="." instance=ExtResource("3_cyyhf")]
+position = Vector2(14, 1)
+
+[node name="StepSFX" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_26x1o")
+bus = &"SFX"

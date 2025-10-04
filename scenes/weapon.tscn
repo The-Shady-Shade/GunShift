@@ -1,0 +1,41 @@
+[gd_scene load_steps=7 format=3 uid="uid://bl25tjtcngn46"]
+
+[ext_resource type="Script" path="res://scripts/weapon.gd" id="1_qqblp"]
+[ext_resource type="PackedScene" uid="uid://dsj83trdltu6r" path="res://scenes/projectile.tscn" id="2_ottxa"]
+[ext_resource type="Texture2D" uid="uid://dbqodtimtxbeo" path="res://sprites/weapon.png" id="3_7ym4a"]
+[ext_resource type="AudioStream" uid="uid://6ta343ngiqqg" path="res://audio/shoot.wav" id="4_jts1p"]
+
+[sub_resource type="Animation" id="Animation_uw271"]
+resource_name = "Shoot"
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_rd5hp"]
+_data = {
+"Shoot": SubResource("Animation_uw271")
+}
+
+[node name="Weapon" type="Node2D" node_paths=PackedStringArray("sprite", "shoot_marker", "back_marker", "shoot_sfx")]
+script = ExtResource("1_qqblp")
+sprite = NodePath("Sprite2D")
+shoot_marker = NodePath("Sprite2D/ShootMarker")
+back_marker = NodePath("Sprite2D/BackMarker")
+shoot_sfx = NodePath("ShootSFX")
+projectile_scene = ExtResource("2_ottxa")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("3_7ym4a")
+offset = Vector2(2, -1)
+
+[node name="ShootMarker" type="Marker2D" parent="Sprite2D"]
+position = Vector2(16, -3)
+
+[node name="BackMarker" type="Marker2D" parent="Sprite2D"]
+position = Vector2(-4, -3)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_rd5hp")
+}
+
+[node name="ShootSFX" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_jts1p")
+bus = &"SFX"
