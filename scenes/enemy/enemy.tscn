@@ -1,0 +1,57 @@
+[gd_scene load_steps=11 format=3 uid="uid://cw0ve1njdyrk8"]
+
+[ext_resource type="Script" path="res://scripts/enemy.gd" id="1_qaf7s"]
+[ext_resource type="PackedScene" uid="uid://w7x2hvecrxtj" path="res://scenes/projectiles/enemy_projectile.tscn" id="2_y1o8s"]
+[ext_resource type="PackedScene" uid="uid://dkltyjoegxyfa" path="res://scenes/particles/enemy_death_vfx.tscn" id="3_71bkh"]
+[ext_resource type="PackedScene" uid="uid://dv7fuvy425s6" path="res://scenes/menu/ending.tscn" id="4_jn5wg"]
+[ext_resource type="Shader" path="res://shaders/flash.gdshader" id="4_nx7vc"]
+[ext_resource type="Texture2D" uid="uid://dkn7pc24pla6k" path="res://sprites/enemy/enemy.png" id="5_elxne"]
+[ext_resource type="AudioStream" uid="uid://hwk6tnom6jpo" path="res://audio/sfx/battle/enemy_damage.wav" id="6_nqskf"]
+[ext_resource type="Texture2D" uid="uid://bryk05dvq1nko" path="res://sprites/enemy/hp.png" id="6_qafsm"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_2c5xm"]
+resource_local_to_scene = true
+shader = ExtResource("4_nx7vc")
+shader_parameter/flash_color = Color(255, 255, 255, 255)
+shader_parameter/flash_modifier = 0.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_rev7a"]
+resource_local_to_scene = true
+size = Vector2(16, 16)
+
+[node name="Enemy" type="CharacterBody2D" node_paths=PackedStringArray("sprite", "collision_shape", "raycast", "hp_bar", "damage_sfx") groups=["Enemies"]]
+collision_layer = 4
+collision_mask = 5
+script = ExtResource("1_qaf7s")
+sprite = NodePath("Sprite2D")
+collision_shape = NodePath("CollisionShape2D")
+raycast = NodePath("RayCast2D")
+hp_bar = NodePath("HpBar")
+damage_sfx = NodePath("DamageSFX")
+projectile_scene = ExtResource("2_y1o8s")
+death_vfx_scene = ExtResource("3_71bkh")
+ending_scene = ExtResource("4_jn5wg")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_2c5xm")
+texture = ExtResource("5_elxne")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_rev7a")
+
+[node name="RayCast2D" type="RayCast2D" parent="."]
+target_position = Vector2(150, 0)
+collision_mask = 7
+
+[node name="HpBar" type="TextureProgressBar" parent="."]
+visible = false
+offset_left = -7.0
+offset_top = -14.0
+offset_right = 7.0
+offset_bottom = -10.0
+value = 100.0
+texture_progress = ExtResource("6_qafsm")
+
+[node name="DamageSFX" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("6_nqskf")
+bus = &"SFX"

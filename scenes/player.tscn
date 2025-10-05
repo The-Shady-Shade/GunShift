@@ -1,47 +1,45 @@
-[gd_scene load_steps=8 format=3 uid="uid://tvgp7r3oyq0c"]
+[gd_scene load_steps=13 format=3 uid="uid://tvgp7r3oyq0c"]
 
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_klhag"]
-[ext_resource type="Texture2D" uid="uid://bgydtjt8dttd1" path="res://sprites/player.png" id="2_vya8x"]
+[ext_resource type="Script" path="res://scripts/camera.gd" id="2_ufdw6"]
+[ext_resource type="Texture2D" uid="uid://bgydtjt8dttd1" path="res://sprites/player/player.png" id="2_vya8x"]
 [ext_resource type="PackedScene" uid="uid://bl25tjtcngn46" path="res://scenes/weapon.tscn" id="3_cyyhf"]
-[ext_resource type="AudioStream" uid="uid://u2tsb70rxjpa" path="res://audio/step.wav" id="4_26x1o"]
-
-[sub_resource type="Gradient" id="Gradient_cx7fn"]
-interpolation_mode = 2
-offsets = PackedFloat32Array(0.194805, 0.883117)
-colors = PackedColorArray(2.76752e-07, 0.115017, 0.221482, 1, 6.01634e-09, 0.0716441, 0.150949, 1)
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_djb65"]
-gradient = SubResource("Gradient_cx7fn")
-width = 640
-height = 360
-fill = 1
-fill_from = Vector2(0.5, 0.5)
+[ext_resource type="Texture2D" uid="uid://clsdbl44rsm7p" path="res://sprites/player/hp.png" id="5_ju34y"]
+[ext_resource type="Texture2D" uid="uid://b8ijd4qwhrbes" path="res://sprites/player/weapon/reload.png" id="7_eukvt"]
+[ext_resource type="AudioStream" uid="uid://6pfygah6oyah" path="res://audio/sfx/battle/player_damage.wav" id="7_niopk"]
+[ext_resource type="AudioStream" uid="uid://hathmurb1cht" path="res://audio/sfx/battle/dash.wav" id="8_h5nym"]
+[ext_resource type="AudioStream" uid="uid://caxl8b0rrya2p" path="res://audio/sfx/battle/player_death.wav" id="8_qr2x6"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_8jain"]
 size = Vector2(16, 16)
 
-[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("sprite", "weapon", "step_sfx")]
+[sub_resource type="Gradient" id="Gradient_e6xji"]
+interpolation_mode = 2
+offsets = PackedFloat32Array(0.318182, 0.733766)
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_dt1rh"]
+gradient = SubResource("Gradient_e6xji")
+width = 360
+height = 360
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+
+[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("camera", "sprite", "weapon", "hp_bar", "dash_bar", "dash_sfx", "damage_sfx", "death_sfx")]
 collision_layer = 2
+collision_mask = 5
 script = ExtResource("1_klhag")
+camera = NodePath("Camera2D")
 sprite = NodePath("Sprite2D")
 weapon = NodePath("Weapon")
-step_sfx = NodePath("StepSFX")
+hp_bar = NodePath("HpBar")
+dash_bar = NodePath("DashBar")
+dash_sfx = NodePath("DashSFX")
+damage_sfx = NodePath("DamageSFX")
+death_sfx = NodePath("DeathSFX")
 
 [node name="Camera2D" type="Camera2D" parent="."]
-
-[node name="TextureRect" type="TextureRect" parent="Camera2D"]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -320.0
-offset_top = -180.0
-offset_right = 320.0
-offset_bottom = 180.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = SubResource("GradientTexture2D_djb65")
+script = ExtResource("2_ufdw6")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("2_vya8x")
@@ -52,6 +50,44 @@ shape = SubResource("RectangleShape2D_8jain")
 [node name="Weapon" parent="." instance=ExtResource("3_cyyhf")]
 position = Vector2(14, 1)
 
-[node name="StepSFX" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("4_26x1o")
+[node name="PointLight2D" type="PointLight2D" parent="."]
+color = Color(1, 0, 0.25098, 1)
+shadow_enabled = true
+texture = SubResource("GradientTexture2D_dt1rh")
+
+[node name="HpBar" type="TextureProgressBar" parent="."]
+visible = false
+offset_left = -7.0
+offset_top = -14.0
+offset_right = 7.0
+offset_bottom = -10.0
+value = 100.0
+texture_progress = ExtResource("5_ju34y")
+
+[node name="DashBar" type="TextureProgressBar" parent="."]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -18.0
+offset_top = -4.0
+offset_right = -10.0
+offset_bottom = 4.0
+grow_horizontal = 2
+grow_vertical = 2
+max_value = 3.0
+step = 0.01
+fill_mode = 4
+texture_progress = ExtResource("7_eukvt")
+
+[node name="DashSFX" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("8_h5nym")
 bus = &"SFX"
+
+[node name="DamageSFX" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("7_niopk")
+
+[node name="DeathSFX" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("8_qr2x6")

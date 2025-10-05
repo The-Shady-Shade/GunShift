@@ -1,25 +1,26 @@
-[gd_scene load_steps=7 format=3 uid="uid://bl25tjtcngn46"]
+[gd_scene load_steps=8 format=3 uid="uid://bl25tjtcngn46"]
 
 [ext_resource type="Script" path="res://scripts/weapon.gd" id="1_qqblp"]
-[ext_resource type="PackedScene" uid="uid://dsj83trdltu6r" path="res://scenes/projectile.tscn" id="2_ottxa"]
-[ext_resource type="Texture2D" uid="uid://dbqodtimtxbeo" path="res://sprites/weapon.png" id="3_7ym4a"]
-[ext_resource type="AudioStream" uid="uid://6ta343ngiqqg" path="res://audio/shoot.wav" id="4_jts1p"]
+[ext_resource type="PackedScene" uid="uid://dsj83trdltu6r" path="res://scenes/projectiles/player_projectile.tscn" id="2_ottxa"]
+[ext_resource type="Texture2D" uid="uid://dbqodtimtxbeo" path="res://sprites/player/weapon/weapon.png" id="3_7ym4a"]
+[ext_resource type="Texture2D" uid="uid://b66tx2rmd5xr2" path="res://sprites/player/weapon/ammo.png" id="4_j1kxw"]
+[ext_resource type="AudioStream" uid="uid://6ta343ngiqqg" path="res://audio/sfx/battle/shoot.wav" id="4_jts1p"]
+[ext_resource type="Texture2D" uid="uid://b8ijd4qwhrbes" path="res://sprites/player/weapon/reload.png" id="4_xb2ml"]
 
-[sub_resource type="Animation" id="Animation_uw271"]
-resource_name = "Shoot"
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_qvmdg"]
+size = Vector2(20, 6)
 
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_rd5hp"]
-_data = {
-"Shoot": SubResource("Animation_uw271")
-}
-
-[node name="Weapon" type="Node2D" node_paths=PackedStringArray("sprite", "shoot_marker", "back_marker", "shoot_sfx")]
+[node name="Weapon" type="Node2D" node_paths=PackedStringArray("sprite", "shoot_marker", "back_marker", "shoot_area", "shoot_sfx", "ammo_container", "reload_bar", "shoot_bar")]
 script = ExtResource("1_qqblp")
 sprite = NodePath("Sprite2D")
 shoot_marker = NodePath("Sprite2D/ShootMarker")
 back_marker = NodePath("Sprite2D/BackMarker")
+shoot_area = NodePath("Sprite2D/ShootArea")
 shoot_sfx = NodePath("ShootSFX")
 projectile_scene = ExtResource("2_ottxa")
+ammo_container = NodePath("AmmoContainer")
+reload_bar = NodePath("ReloadBar")
+shoot_bar = NodePath("ShootBar")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("3_7ym4a")
@@ -31,11 +32,91 @@ position = Vector2(16, -3)
 [node name="BackMarker" type="Marker2D" parent="Sprite2D"]
 position = Vector2(-4, -3)
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-libraries = {
-"": SubResource("AnimationLibrary_rd5hp")
-}
+[node name="ShootArea" type="Area2D" parent="Sprite2D"]
+visible = false
+collision_layer = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Sprite2D/ShootArea"]
+position = Vector2(6, -3)
+shape = SubResource("RectangleShape2D_qvmdg")
+
+[node name="AmmoContainer" type="VBoxContainer" parent="."]
+offset_left = 10.0
+offset_top = -7.0
+offset_right = 24.0
+offset_bottom = 17.0
+rotation = 3.14159
+size_flags_horizontal = 3
+theme_override_constants/separation = 1
+
+[node name="AmmoBar" type="TextureProgressBar" parent="AmmoContainer"]
+layout_mode = 2
+max_value = 3.0
+value = 3.0
+allow_lesser = true
+fill_mode = 1
+texture_progress = ExtResource("4_j1kxw")
+
+[node name="AmmoBar1" type="TextureProgressBar" parent="AmmoContainer"]
+layout_mode = 2
+min_value = 3.0
+max_value = 6.0
+value = 3.0
+allow_lesser = true
+fill_mode = 1
+texture_progress = ExtResource("4_j1kxw")
+
+[node name="AmmoBar2" type="TextureProgressBar" parent="AmmoContainer"]
+layout_mode = 2
+min_value = 6.0
+max_value = 9.0
+value = 6.0
+allow_lesser = true
+fill_mode = 1
+texture_progress = ExtResource("4_j1kxw")
+
+[node name="AmmoBar3" type="TextureProgressBar" parent="AmmoContainer"]
+layout_mode = 2
+min_value = 9.0
+max_value = 12.0
+value = 9.0
+allow_lesser = true
+fill_mode = 1
+texture_progress = ExtResource("4_j1kxw")
+
+[node name="AmmoBar4" type="TextureProgressBar" parent="AmmoContainer"]
+layout_mode = 2
+min_value = 12.0
+max_value = 15.0
+value = 12.0
+allow_lesser = true
+fill_mode = 1
+texture_progress = ExtResource("4_j1kxw")
+
+[node name="ReloadBar" type="TextureProgressBar" parent="."]
+visible = false
+offset_left = -1.0
+offset_top = -15.0
+offset_right = 7.0
+offset_bottom = -7.0
+max_value = 1.0
+step = 0.01
+value = 1.0
+fill_mode = 4
+texture_progress = ExtResource("4_xb2ml")
+
+[node name="ShootBar" type="TextureProgressBar" parent="."]
+visible = false
+offset_left = 10.0
+offset_top = -7.0
+offset_right = 18.0
+offset_bottom = 1.0
+max_value = 0.5
+step = 0.01
+fill_mode = 4
+texture_progress = ExtResource("4_xb2ml")
 
 [node name="ShootSFX" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("4_jts1p")
+volume_db = -5.0
 bus = &"SFX"

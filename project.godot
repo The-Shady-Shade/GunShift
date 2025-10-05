@@ -10,14 +10,14 @@ config_version=5
 
 [application]
 
-config/name="GunBorn"
+config/name="GunShift"
 config/version="1.0.0"
 config/tags=PackedStringArray("2d", "itch_io", "ludum_dare")
-run/main_scene="res://scenes/world.tscn"
+run/main_scene="res://scenes/menu/main_menu.tscn"
 config/features=PackedStringArray("4.3", "GL Compatibility")
-boot_splash/bg_color=Color(0, 0, 0, 1)
+boot_splash/bg_color=Color(0, 0.0705882, 0.14902, 1)
 boot_splash/show_image=false
-config/icon="res://sprites/player.png"
+config/icon="res://sprites/player/player.png"
 
 [audio]
 
@@ -25,7 +25,9 @@ buses/default_bus_layout="res://audio/audio_bus_layout.tres"
 
 [autoload]
 
-WeaponManager="*res://scripts/singletons/weapon_manager.gd"
+AttachmentsManager="*res://scripts/singletons/attachments_manager.gd"
+global="*res://scripts/singletons/global.gd"
+SceneTransition="*res://scenes/menu/scene_transition.tscn"
 
 [display]
 
@@ -33,6 +35,18 @@ window/size/viewport_width=640
 window/size/viewport_height=360
 window/size/mode=3
 window/stretch/mode="canvas_items"
+mouse_cursor/custom_image="res://sprites/cursor.png"
+mouse_cursor/custom_image_hotspot=Vector2(17, 17)
+mouse_cursor/tooltip_position_offset=Vector2(32, 32)
+
+[global_group]
+
+Enemies=""
+
+[gui]
+
+theme/custom="res://resources/theme.tres"
+theme/custom_font="res://resources/BoldPixels.ttf"
 
 [input]
 
@@ -63,20 +77,24 @@ shoot={
 }
 dash={
 "deadzone": 0.5,
-"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":4194325,"key_label":0,"unicode":0,"location":0,"echo":false,"script":null)
+"events": [Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"button_mask":2,"position":Vector2(96, 21),"global_position":Vector2(105, 67),"factor":1.0,"button_index":2,"canceled":false,"pressed":true,"double_click":false,"script":null)
 ]
 }
 
 [layer_names]
 
 2d_physics/layer_1="Environment"
+2d_navigation/layer_1="Environment"
 2d_physics/layer_2="Player"
 2d_physics/layer_3="Enemy"
 2d_physics/layer_4="Projectile"
+avoidance/layer_1="Environment"
+avoidance/layer_2="Player"
+avoidance/layer_3="Enemy"
 
 [rendering]
 
 textures/canvas_textures/default_texture_filter=3
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"
-environment/defaults/default_clear_color=Color(6.01634e-09, 0.0716441, 0.150949, 1)
+environment/defaults/default_clear_color=Color(0, 0.0705882, 0.14902, 1)

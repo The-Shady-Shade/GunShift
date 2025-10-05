@@ -1,0 +1,39 @@
+[gd_scene load_steps=6 format=3 uid="uid://boyi4kc1cix1s"]
+
+[ext_resource type="Script" path="res://scripts/particles_manager.gd" id="1_wq7rh"]
+[ext_resource type="AudioStream" uid="uid://3cf48sqv3lqb" path="res://audio/sfx/battle/dust.wav" id="2_dsrvj"]
+
+[sub_resource type="Curve" id="Curve_qv0c1"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0.505494), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_2y07q"]
+curve = SubResource("Curve_qv0c1")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_qehii"]
+particle_flag_disable_z = true
+spread = 180.0
+initial_velocity_min = 30.0
+initial_velocity_max = 75.0
+gravity = Vector3(0, 98, 0)
+damping_min = 28.0
+damping_max = 28.0
+scale_min = 3.0
+scale_max = 3.0
+scale_curve = SubResource("CurveTexture_2y07q")
+
+[node name="Dust" type="Node2D"]
+script = ExtResource("1_wq7rh")
+timer = 0.5
+
+[node name="Debris" type="GPUParticles2D" parent="."]
+emitting = false
+process_material = SubResource("ParticleProcessMaterial_qehii")
+lifetime = 0.5
+one_shot = true
+explosiveness = 1.0
+
+[node name="DustSFX" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_dsrvj")
+volume_db = -10.0
+bus = &"SFX"

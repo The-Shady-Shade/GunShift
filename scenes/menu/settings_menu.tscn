@@ -1,0 +1,71 @@
+[gd_scene load_steps=2 format=3 uid="uid://ykoib1y5yh64"]
+
+[ext_resource type="Script" path="res://scripts/menu/settings_menu.gd" id="1_xfb3x"]
+
+[node name="SettingsMenu" type="Control" node_paths=PackedStringArray("master_slider", "soundtrack_slider", "sfx_slider")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_xfb3x")
+master_slider = NodePath("PanelContainer/VBoxContainer/MasterSlider")
+soundtrack_slider = NodePath("PanelContainer/VBoxContainer/SoundtrackSlider")
+sfx_slider = NodePath("PanelContainer/VBoxContainer/SFXSlider")
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -86.5
+offset_top = -62.0
+offset_right = 86.5
+offset_bottom = 62.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer"]
+layout_mode = 2
+
+[node name="VolumeLabel" type="Label" parent="PanelContainer/VBoxContainer"]
+layout_mode = 2
+text = "Volume"
+horizontal_alignment = 1
+
+[node name="MasterLabel" type="Label" parent="PanelContainer/VBoxContainer"]
+layout_mode = 2
+text = "Master"
+
+[node name="MasterSlider" type="HSlider" parent="PanelContainer/VBoxContainer"]
+layout_mode = 2
+value = 100.0
+
+[node name="SoundtrackLabel" type="Label" parent="PanelContainer/VBoxContainer"]
+layout_mode = 2
+text = "Music"
+
+[node name="SoundtrackSlider" type="HSlider" parent="PanelContainer/VBoxContainer"]
+layout_mode = 2
+value = 100.0
+
+[node name="SFXLabel" type="Label" parent="PanelContainer/VBoxContainer"]
+layout_mode = 2
+text = "SFX"
+
+[node name="SFXSlider" type="HSlider" parent="PanelContainer/VBoxContainer"]
+layout_mode = 2
+value = 100.0
+
+[node name="BackButton" type="Button" parent="PanelContainer/VBoxContainer"]
+layout_mode = 2
+text = "Back"
+flat = true
+
+[connection signal="drag_ended" from="PanelContainer/VBoxContainer/MasterSlider" to="." method="_on_master_slider_drag_ended"]
+[connection signal="drag_ended" from="PanelContainer/VBoxContainer/SoundtrackSlider" to="." method="_on_soundtrack_slider_drag_ended"]
+[connection signal="drag_ended" from="PanelContainer/VBoxContainer/SFXSlider" to="." method="_on_sfx_slider_drag_ended"]
+[connection signal="pressed" from="PanelContainer/VBoxContainer/BackButton" to="." method="_on_back_button_pressed"]
