@@ -37,6 +37,7 @@ func _ready() -> void:
 	dash_bar.max_value = dash_cd_max
 
 func _process(delta: float) -> void:
+	hp = clamp(hp, 0.0, hp_max)
 	dash_time = max(0.0, dash_time - delta)
 	
 	if dash_cd > 0.0 && dash_cd < dash_cd_max:

@@ -28,6 +28,7 @@ buses/default_bus_layout="res://audio/audio_bus_layout.tres"
 AttachmentsManager="*res://scripts/singletons/attachments_manager.gd"
 global="*res://scripts/singletons/global.gd"
 SceneTransition="*res://scenes/menu/scene_transition.tscn"
+Talo="*res://addons/talo/talo_manager.gd"
 
 [display]
 
@@ -38,6 +39,10 @@ window/stretch/mode="canvas_items"
 mouse_cursor/custom_image="res://sprites/cursor.png"
 mouse_cursor/custom_image_hotspot=Vector2(17, 17)
 mouse_cursor/tooltip_position_offset=Vector2(32, 32)
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/talo/plugin.cfg")
 
 [global_group]
 

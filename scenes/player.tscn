@@ -37,6 +37,7 @@ dash_bar = NodePath("DashBar")
 dash_sfx = NodePath("DashSFX")
 damage_sfx = NodePath("DamageSFX")
 death_sfx = NodePath("DeathSFX")
+heal = true
 
 [node name="Camera2D" type="Camera2D" parent="."]
 script = ExtResource("2_ufdw6")
