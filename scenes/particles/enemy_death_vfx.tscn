@@ -1,40 +1,15 @@
-[gd_scene load_steps=7 format=3 uid="uid://dkltyjoegxyfa"]
+[gd_scene load_steps=3 format=3 uid="uid://dkltyjoegxyfa"]
 
 [ext_resource type="Script" path="res://scripts/particles_manager.gd" id="1_gbgxh"]
+[ext_resource type="Material" uid="uid://1upn3cuqqiux" path="res://resources/particles/enemy_death_vfx.tres" id="2_udqun"]
 
-[sub_resource type="Gradient" id="Gradient_q6wvp"]
-colors = PackedColorArray(1, 0, 0.25098, 1, 1, 0, 0.25098, 1)
-
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_wi2d8"]
-gradient = SubResource("Gradient_q6wvp")
-
-[sub_resource type="Curve" id="Curve_qv0c1"]
-_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0.505494), 0.0, 0.0, 0, 0]
-point_count = 2
-
-[sub_resource type="CurveTexture" id="CurveTexture_2y07q"]
-curve = SubResource("Curve_qv0c1")
-
-[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_hik2w"]
-particle_flag_disable_z = true
-spread = 180.0
-initial_velocity_min = 30.0
-initial_velocity_max = 75.0
-gravity = Vector3(0, 98, 0)
-damping_min = 28.0
-damping_max = 28.0
-scale_min = 3.0
-scale_max = 3.0
-scale_curve = SubResource("CurveTexture_2y07q")
-color_ramp = SubResource("GradientTexture1D_wi2d8")
-
-[node name="DeathVFX" type="Node2D"]
+[node name="EnemyDeathVFX" type="Node2D"]
 script = ExtResource("1_gbgxh")
 
 [node name="Debris" type="GPUParticles2D" parent="."]
 emitting = false
 amount = 16
-process_material = SubResource("ParticleProcessMaterial_hik2w")
+process_material = ExtResource("2_udqun")
 lifetime = 0.5
 one_shot = true
 explosiveness = 1.0

@@ -45,7 +45,7 @@ scale = Vector2(5, 5)
 shape = SubResource("RectangleShape2D_rev7a")
 
 [node name="RayCast2D" type="RayCast2D" parent="."]
-target_position = Vector2(300, 0)
+target_position = Vector2(400, 0)
 collision_mask = 7
 
 [node name="HpBar" type="TextureProgressBar" parent="."]

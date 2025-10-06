@@ -2,8 +2,8 @@ class_name Player extends CharacterBody2D
 
 @export var camera: Camera2D
 @export var sprite: Sprite2D
+@export var collision_shape: CollisionShape2D
 @export var weapon: Node2D
-@export var knockback_area: Area2D
 
 @export var hp_bar: TextureProgressBar
 @export var dash_bar: TextureProgressBar
@@ -39,19 +39,19 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	hp = clamp(hp, 0.0, hp_max)
 	dash_time = max(0.0, dash_time - delta)
+	dash_trail_timer -= delta * 5
 	
 	if dash_cd > 0.0 && dash_cd < dash_cd_max:
 		dash_cd += delta
 		dash_bar.visible = true
 	else:
 		dash_cd = 0.0
-		dash_trail_timer += delta
 		dash_bar.visible = false
 	
 	hp_bar.value = hp
 	dash_bar.value = dash_cd
 
-func _physics_process(delta: float) -> void:
+func _physics_process(_delta: float) -> void:
 	var dir: Vector2 = Input.get_vector("left", "right", "up", "down")
 	
 	if dir:
@@ -60,7 +60,6 @@ func _physics_process(delta: float) -> void:
 			
 		if dash_time > 0.0:
 			velocity = dir * dash_spd
-			dash_trail_timer -= delta * 5
 			if dash_trail_timer < 0.0:
 				dash_trail_timer = dash_trail_delay
 				emit_dash_trail()
@@ -80,11 +79,17 @@ func _physics_process(delta: float) -> void:
 
 func dash(terrified: bool = false) -> void:
 	dash_time = dash_time_max
+	dash_trail_timer = 0.0
+	
+	
+	
 	if !terrified:
 		dash_cd += 0.01
 	dash_sfx.play()
+	
 	if tactical_reload:
 		weapon.ammo = weapon.ammo_max
+	
 	if heal:
 		hp += hp_max / 5
 		hp_bar.visible = true
@@ -105,9 +110,9 @@ func get_damage(dmg: float) -> void:
 	damage_sfx.play()
 	global.player.camera.shake_screen(4, 0.1)
 	
-	var tween: Tween = get_tree().create_tween()
-	tween.tween_property(sprite, "scale", Vector2(0.8, 1.2), 0.1).set_trans(Tween.TRANS_BOUNCE)
-	tween.tween_property(sprite, "scale", Vector2(1.0, 1.0), 0.1).set_trans(Tween.TRANS_BOUNCE)
+	var scale_tween: Tween = get_tree().create_tween()
+	scale_tween.tween_property(sprite, "scale", Vector2(0.8, 1.2), 0.1).set_trans(Tween.TRANS_BOUNCE)
+	scale_tween.tween_property(sprite, "scale", Vector2(1.0, 1.0), 0.1).set_trans(Tween.TRANS_BOUNCE)
 	
 	hp_bar.visible = true
 	await get_tree().create_timer(0.5).timeout
@@ -118,12 +123,16 @@ func emit_dash_trail() -> void:
 	trail.z_index = -2
 	trail.modulate = Color(1.0, 1.0, 1.0, 0.75)
 	get_tree().current_scene.add_child(trail)
-	trail.global_position = global_position - Vector2(0, 0.1)
+	trail.global_position = global_position # - Vector2(0, 0.1)
 	
 	var trail_sprite: Sprite2D = sprite.duplicate()
 	trail.add_child(trail_sprite)
 	
-	var tween: Tween = create_tween()
-	#tween.set_ease(Tween.EASE_OUT)
-	tween.tween_property(trail, "modulate", Color(1.0, 1.0, 1.0, 0.0), 0.2)
-	tween.chain().tween_callback(trail.queue_free)
+	var scale_tween: Tween = get_tree().create_tween()
+	scale_tween.tween_property(sprite, "scale", Vector2(0.8, 0.8), 0.1).set_trans(Tween.TRANS_BOUNCE)
+	scale_tween.tween_property(sprite, "scale", Vector2(1.0, 1.0), 0.1).set_trans(Tween.TRANS_BOUNCE)
+	
+	var trail_modulate_tween: Tween = create_tween()
+	trail_modulate_tween.set_ease(Tween.EASE_OUT)
+	trail_modulate_tween.tween_property(trail, "modulate", Color(1.0, 1.0, 1.0, 0.0), 0.2)
+	trail_modulate_tween.chain().tween_callback(trail.queue_free)

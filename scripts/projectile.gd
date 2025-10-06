@@ -1,7 +1,6 @@
 class_name Projectile extends CharacterBody2D
 
 @export var area: Area2D
-@export var explosion_scene: PackedScene
 @export var dust_scene: PackedScene
 var dust_emitted: bool = false
 @export var spd: float = 400.0

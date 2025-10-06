@@ -1,6 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://cpqmiqab3uaux"]
+[gd_scene load_steps=7 format=3 uid="uid://cpqmiqab3uaux"]
 
 [ext_resource type="Script" path="res://scripts/singletons/scene_transition.gd" id="1_4vndg"]
+[ext_resource type="Material" uid="uid://pk8ai3j3pek8" path="res://resources/particles/dust.tres" id="2_anbxt"]
+[ext_resource type="Material" uid="uid://1upn3cuqqiux" path="res://resources/particles/enemy_death_vfx.tres" id="3_x2ok3"]
 
 [sub_resource type="Animation" id="Animation_ln70r"]
 resource_name = "Dissolve"
@@ -43,6 +45,7 @@ _data = {
 [node name="SceneTransition" type="CanvasLayer" node_paths=PackedStringArray("animation")]
 script = ExtResource("1_4vndg")
 animation = NodePath("AnimationPlayer")
+process_materials = Array[ParticleProcessMaterial]([ExtResource("2_anbxt"), ExtResource("3_x2ok3")])
 
 [node name="DissolveRect" type="ColorRect" parent="."]
 modulate = Color(1, 1, 1, 0)

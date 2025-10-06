@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://8ix02us5uvfr"]
 
 [ext_resource type="Script" path="res://scripts/menu/main_menu.gd" id="1_td65x"]
-[ext_resource type="PackedScene" uid="uid://lpdqu8inf30y" path="res://scenes/world.tscn" id="2_kfod8"]
+[ext_resource type="PackedScene" uid="uid://dsbbkpv8byrgi" path="res://scenes/menu/intro.tscn" id="2_ttk3o"]
 [ext_resource type="PackedScene" uid="uid://ykoib1y5yh64" path="res://scenes/menu/settings_menu.tscn" id="3_wweag"]
 
 [node name="MainMenu" type="Control"]
@@ -12,8 +12,17 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_td65x")
-world_scene = ExtResource("2_kfod8")
+intro_scene = ExtResource("2_ttk3o")
 settings_menu_scene = ExtResource("3_wweag")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0.0705882, 0.14902, 1)
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
 layout_mode = 1
